@@ -17,9 +17,9 @@ void bench_ewah(int cardinality)
     auto start = std::chrono::steady_clock::now();
     for(auto i = x.begin() ; i != x.end() ; i++) ++counter;
     auto end = std::chrono::steady_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
     std::cout << "EWAH Entries : " << counter
-        << " Time: " << elapsed.count()
+        << " Time: " << elapsed.count() << " ns"
         << " Size: " << x.sizeInBits() / (8 * 1024) << " KB" << std::endl;
 }
 
@@ -38,9 +38,9 @@ void bench_roaring(int cardinality)
     auto start = std::chrono::steady_clock::now();
     for(Roaring::const_iterator i = r.begin() ; i != r.end() ; i++) ++counter;
     auto end = std::chrono::steady_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
     std::cout << "Roaring Entries : " << counter
-        << " Time: " << elapsed.count()
+        << " Time: " << elapsed.count() << " ns"
         << " Size: " << r.getSizeInBytes() / (1024)  << " KB" << std::endl;
 }
 
