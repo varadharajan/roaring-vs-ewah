@@ -6,11 +6,11 @@
 
 typedef EWAHBoolArray<uint64_t> bitmap;
 
-void bench_ewah()
+void bench_ewah(int cardinality)
 {
     bitmap x;
     for(auto i = 0; i <= 100000000; i++) {
-        if(i % 100 == 0) x.set(i);
+        if(i % cardinality == 0) x.set(i);
     }
 
     auto counter = 0;
@@ -23,11 +23,11 @@ void bench_ewah()
         << " Size: " << x.sizeInBits() / (8 * 1024) << " KB" << std::endl;
 }
 
-void bench_roaring()
+void bench_roaring(int cardinality)
 {
     Roaring r;
     for(auto i = 0; i <= 100000000; i++) {
-        if(i % 100 == 0) r.add(i);
+        if(i % cardinality == 0) r.add(i);
     }
 
     r.setCopyOnWrite(true);
@@ -46,7 +46,12 @@ void bench_roaring()
 
 int main(int argc, char const *argv[])
 {
-    bench_roaring();
-    bench_ewah();
+
+    for(auto i = 10; i <= 100000; i*=10) {
+        std::cout << "Cardinality : 1 in " << i << " bits" << std::endl;
+        bench_roaring(i);
+        bench_ewah(i);
+        std::cout << std::endl;
+    }
     return 0;
 }
